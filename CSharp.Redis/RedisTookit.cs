@@ -57,27 +57,15 @@ namespace CSharp.Redis
 
         private void treeHost_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            string pattern = this.txtPattern.Text.Trim();
-            if (string.IsNullOrEmpty(pattern)) pattern = "*";
             try
             {
                 var conn = (DbConnection)e.Node.Tag;
                 Redis = new RedisHelper(conn.Host, conn.Port, conn.Password);
-
                 this.btnExecute.Enabled = true;
                 this.btnInfo.Enabled = true;
-
-                this.listKeys.Items.Clear();
-                var entries = Redis.QueryKeys(pattern);
-                int i = 0;
-                foreach (var entry in entries)
-                {
-                    i++;
-                    this.listKeys.Items.Add(new ListViewItem(new string[] { entry.Key, entry.Type, entry.ItemCount.ToString(), i.ToString(), }) { Tag = entry });
-                }
-                this.txtCommand.Text = RedisCommand.Keys.KEYS + " " + pattern;
                 this.Text = string.Format("{0}(v{1}) {2}:{3}", Title, Application.ProductVersion, conn.Host, conn.Port);
 
+                QueryKeys("*");
             }
             catch (Exception ex)
             {
@@ -92,7 +80,24 @@ namespace CSharp.Redis
 
         private void btnExecute_Click(object sender, EventArgs e)
         {
-            ExecuteCommand(this.txtCommand.Text);
+            string command = this.txtCommand.Text.Trim();
+            if (!string.IsNullOrWhiteSpace(command))
+            {
+                if (command.ToLower().StartsWith("keys"))
+                {
+                    command = command.Substring(4).Trim();
+                    if (string.IsNullOrWhiteSpace(command)) command = "*";
+                    QueryKeys(command);
+                }
+                else
+                {
+                    ExecuteCommand(this.txtCommand.Text);
+                }
+            }
+            else
+            {
+                MessageBox.Show("请输入要执行的Redis命令");
+            }
         }
 
         private void listKeys_MouseClick(object sender, MouseEventArgs e)
@@ -108,6 +113,7 @@ namespace CSharp.Redis
         {
             try
             {
+                command = command.Trim();
                 this.txtCommand.Text = command;
 
                 this.txtVal.Text = string.Format("{0} command {1} success\r\n{2}", DateTime.Now, command, Redis.ExecuteCommand(command.Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
@@ -117,8 +123,28 @@ namespace CSharp.Redis
                 this.txtVal.Text = string.Format("{0} command {1}\r\n{2}", DateTime.Now, command, ex.Message);
                 if (ex.Message.Contains("ERR unknown command"))
                 {
-                    this.txtVal.Text += "\r\n请确认服务器版本是否支持当前命令";
+                    this.txtVal.Text += "\r\n请确认服务器版本是否支持当前命令\r\n若要执行key查询命令，请输入 keys:" + command;
                 }
+            }
+        }
+
+        public void QueryKeys(string pattern)
+        {
+            try
+            {
+                this.listKeys.Items.Clear();
+                var entries = Redis.QueryKeys(pattern);
+                int i = 0;
+                foreach (var entry in entries)
+                {
+                    i++;
+                    this.listKeys.Items.Add(new ListViewItem(new string[] { entry.Key, entry.Type, entry.ItemCount.ToString(), i.ToString(), }) { Tag = entry });
+                }
+                this.txtCommand.Text = RedisCommand.Keys.KEYS + " " + pattern;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 

@@ -29,8 +29,6 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisTookit));
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtPattern = new System.Windows.Forms.TextBox();
             this.txtVal = new System.Windows.Forms.TextBox();
             this.btnInfo = new System.Windows.Forms.Button();
             this.treeHost = new System.Windows.Forms.TreeView();
@@ -42,22 +40,6 @@
             this.btnExecute = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 39);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(29, 12);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "key:";
-            // 
-            // txtPattern
-            // 
-            this.txtPattern.Location = new System.Drawing.Point(50, 36);
-            this.txtPattern.Name = "txtPattern";
-            this.txtPattern.Size = new System.Drawing.Size(100, 21);
-            this.txtPattern.TabIndex = 3;
             // 
             // txtVal
             // 
@@ -111,9 +93,9 @@
             // 
             this.txtCommand.BackColor = System.Drawing.SystemColors.InfoText;
             this.txtCommand.ForeColor = System.Drawing.Color.Lime;
-            this.txtCommand.Location = new System.Drawing.Point(263, 39);
+            this.txtCommand.Location = new System.Drawing.Point(101, 39);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(534, 21);
+            this.txtCommand.Size = new System.Drawing.Size(696, 21);
             this.txtCommand.TabIndex = 13;
             // 
             // listKeys
@@ -128,7 +110,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(174, 41);
+            this.label1.Location = new System.Drawing.Point(12, 41);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 12);
             this.label1.TabIndex = 16;
@@ -144,7 +126,7 @@
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
-            // MyRedis
+            // RedisTookit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -156,13 +138,11 @@
             this.Controls.Add(this.treeHost);
             this.Controls.Add(this.btnInfo);
             this.Controls.Add(this.txtVal);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.txtPattern);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "MyRedis";
+            this.Name = "RedisTookit";
             this.Text = "Redis客户端--懒惰的肥兔";
             this.Load += new System.EventHandler(this.RedisTookit_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -174,8 +154,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtPattern;
         private System.Windows.Forms.TextBox txtVal;
         private System.Windows.Forms.Button btnInfo;
         private System.Windows.Forms.TreeView treeHost;
