@@ -51,7 +51,7 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cn.lzrabbit.toolkit.redis\CSharp.Redis.csproj">
+    <ProjectReference Include="..\CSharp.Redis\CSharp.Redis.csproj">
       <Project>{FDDEFD22-C028-4A55-A741-7FC30503FC47}</Project>
       <Name>CSharp.Redis</Name>
     </ProjectReference>
