@@ -65,6 +65,7 @@
     <Compile Include="Client\RedisException.cs" />
     <Compile Include="Client\Pipeline.cs" />
     <Compile Include="Client\PipelineCommand.cs" />
+    <Compile Include="Client\RedisMonitor.cs" />
     <Compile Include="Client\RedisPool.cs" />
     <Compile Include="DbConnection.cs" />
     <Compile Include="LocalApplicationData.cs" />
@@ -78,6 +79,12 @@
     <Compile Include="Note.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerMonitor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ServerMonitor.Designer.cs">
+      <DependentUpon>ServerMonitor.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="AddConnection.resx">
       <DependentUpon>AddConnection.cs</DependentUpon>
     </EmbeddedResource>
@@ -94,6 +101,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="ServerMonitor.resx">
+      <DependentUpon>ServerMonitor.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

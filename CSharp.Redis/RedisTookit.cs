@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 using CSharp.Redis.Client;
+using System.IO;
 
 namespace CSharp.Redis
 {
@@ -24,8 +25,10 @@ namespace CSharp.Redis
             try
             {
                 this.txtVal.Text = Note.V1;
+                this.txtCommand.Focus();
+                this.menuServer.Enabled = false;
                 this.btnExecute.Enabled = false;
-                this.btnInfo.Enabled = false;
+                this.btnMonitor.Enabled = false;
                 this.Text = string.Format("{0}(v{1})", Title, Application.ProductVersion);
 
                 this.listKeys.Columns.Add("Key");
@@ -62,7 +65,8 @@ namespace CSharp.Redis
                 var conn = (DbConnection)e.Node.Tag;
                 Redis = new RedisHelper(conn.Host, conn.Port, conn.Password);
                 this.btnExecute.Enabled = true;
-                this.btnInfo.Enabled = true;
+                this.btnMonitor.Enabled = true;
+                this.menuServer.Enabled = true;
                 this.Text = string.Format("{0}(v{1}) {2}:{3}", Title, Application.ProductVersion, conn.Host, conn.Port);
 
                 QueryKeys("*");
@@ -71,11 +75,6 @@ namespace CSharp.Redis
             {
                 MessageBox.Show(ex.Message);
             }
-        }
-
-        private void btnInfo_Click(object sender, EventArgs e)
-        {
-            ExecuteCommand(RedisCommand.Server.INFO);
         }
 
         private void btnExecute_Click(object sender, EventArgs e)
@@ -106,25 +105,6 @@ namespace CSharp.Redis
             {
                 var keyEntry = this.listKeys.SelectedItems[0].Tag as RedisHelper.RedisKeyEntry;
                 ExecuteCommand(keyEntry.GetRedisCommand());
-            }
-        }
-
-        public void ExecuteCommand(string command)
-        {
-            try
-            {
-                command = command.Trim();
-                this.txtCommand.Text = command;
-
-                this.txtVal.Text = string.Format("{0} command {1} success\r\n{2}", DateTime.Now, command, Redis.ExecuteCommand(command.Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
-            }
-            catch (Exception ex)
-            {
-                this.txtVal.Text = string.Format("{0} command {1}\r\n{2}", DateTime.Now, command, ex.Message);
-                if (ex.Message.Contains("ERR unknown command"))
-                {
-                    this.txtVal.Text += "\r\n请确认服务器版本是否支持当前命令\r\n若要执行key查询命令，请输入 keys:" + command;
-                }
             }
         }
 
@@ -162,5 +142,34 @@ namespace CSharp.Redis
             add.ShowDialog(this);
         }
 
+        private void ServerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExecuteCommand(sender.ToString());
+        }
+
+        private void btnMonitor_Click(object sender, EventArgs e)
+        {
+            ServerMonitor monitor = new ServerMonitor(Redis.Host, Redis.Port, Redis.Password);
+            monitor.Show();
+        }
+
+        public void ExecuteCommand(string command)
+        {
+            try
+            {
+                command = command.Trim();
+                if (command == "CONFIG") command = "CONFIG GET *";
+                this.txtCommand.Text = command;
+                this.txtVal.Text = string.Format("{0} command {1} success\r\n{2}", DateTime.Now, command, Redis.ExecuteCommand(command.Trim().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries)));
+            }
+            catch (Exception ex)
+            {
+                this.txtVal.Text = string.Format("{0} command {1}\r\n{2}", DateTime.Now, command, ex.Message);
+                if (ex.Message.Contains("ERR unknown command"))
+                {
+                    this.txtVal.Text += "\r\n请确认服务器版本是否支持当前命令\r\n若要执行key查询命令，请输入:keys " + command;
+                }
+            }
+        }
     }
 }

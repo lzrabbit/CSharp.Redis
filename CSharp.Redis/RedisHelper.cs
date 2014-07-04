@@ -8,10 +8,18 @@ namespace CSharp.Redis
 {
     public class RedisHelper
     {
+        public string Host { get; set; }
+        public int Port { get; set; }
+
+        public string Password { get; set; }
+
         RedisPool Pool;
         const int MAXCOUNT = 3000;
         public RedisHelper(string host, int port, string password)
         {
+            this.Host = host;
+            this.Port = port;
+            this.Password = password;
             Pool = new RedisPool(host, port, password);
             Pool.GetRedisClient().Dispose();
         }
@@ -79,24 +87,54 @@ namespace CSharp.Redis
 
         public string ExecuteCommand(string[] command)
         {
+            string result;
             using (RedisClient client = Pool.GetRedisClient())
             {
-                return List2String(client.ExecuteCommand<string>(command));
+                var list = client.ExecuteCommand<string>(command);
+                switch (string.Join(" ", command))
+                {
+                    case "TIME":
+                        result = long.Parse(list[0]).ToDateTime().ToString();
+                        break;
+                    case "LASTSAVE":
+                        result = long.Parse(list[0]).ToDateTime().ToString();
+                        break;
+                    case "CONFIG GET *":
+                        result = List2String(list, true);
+                        break;
+                    default:
+                        result = List2String(list);
+                        break;
+                }
             }
+            return result;
         }
 
 
-        public static string List2String(List<String> list)
+
+        public static string List2String(List<String> list, bool isKeyValuePare = false)
         {
-            int max = (int)Math.Floor(Math.Log10(list.Count));
-            if (list.Count == 1) return list[0];
-            string str = null;
-            for (int i = 1; i <= list.Count; i++)
+            if (list.Count == 1) return list[0].Replace("\n", "\r\n");
+            StringBuilder sb = new StringBuilder();
+            if (!isKeyValuePare)
             {
-                string padding = new string(' ', max - (int)Math.Floor(Math.Log10(i)));
-                str += string.Format("{0}) {1}\r\n", padding + i, list[i - 1]);
+                int max = list.Count.ToString().Length;
+                for (int i = 0; i < list.Count; i++)
+                {
+                    string padding = new string(' ', max - (i + 1).ToString().Length);
+                    sb.AppendFormat("{0}) {1}\r\n", padding + (i + 1), list[i].Replace("\n", "\r\n"));
+                }
             }
-            return str;
+            else
+            {
+                int max = (list.Count / 2).ToString().Length;
+                for (int i = 0; i < list.Count; i += 2)
+                {
+                    string padding = new string(' ', max - ((i + 1) / 2).ToString().Length);
+                    sb.AppendFormat("{0}) {1}:{2}\r\n", padding + (i / 2), list[i].Replace("\n", "\r\n"), list[i + 1].Replace("\n", "\r\n"));
+                }
+            }
+            return sb.ToString();
         }
 
         public class RedisKeyEntry

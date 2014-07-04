@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.IO;
+using System.Threading.Tasks;
 namespace CSharp.Redis.Client
 {
     public class RedisClient : RedisBase
@@ -952,10 +955,11 @@ namespace CSharp.Redis.Client
             return ExecuteCommand<string>(RedisCommand.Connection.PING).First() == "PONG";
         }
 
-        public void Quit()
-        {
-            ExecuteCommand<string>(RedisCommand.Connection.QUIT);
-        }
+        //public void Quit()
+        //{
+        //    ExecuteCommand<string>(RedisCommand.Connection.QUIT);
+
+        //}
 
         public void Select(int index)
         {
@@ -1076,14 +1080,6 @@ namespace CSharp.Redis.Client
             return ExecuteCommand<long>(RedisCommand.Server.LASTSAVE).First().ToDateTime();
         }
 
-        /// <summary>
-        /// 实时打印出 Redis 服务器接收到的命令，调试用。
-        /// </summary>
-        public void Monitor()
-        {
-            //TODO 需要特殊处理
-            ExecuteCommand<string>(RedisCommand.Server.MONITOR);
-        }
 
         /// <summary>
         /// SAVE 命令执行一个同步保存操作，将当前 Redis 实例的所有数据快照(snapshot)以 RDB 文件的形式保存到硬盘。
@@ -1107,6 +1103,7 @@ namespace CSharp.Redis.Client
         public void Slaveof(string host, int port)
         {
             ExecuteCommand<string>(RedisCommand.Server.SLAVEOF, host, port);
+
         }
 
         public void SlowLog()

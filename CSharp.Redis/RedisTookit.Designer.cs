@@ -30,14 +30,21 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RedisTookit));
             this.txtVal = new System.Windows.Forms.TextBox();
-            this.btnInfo = new System.Windows.Forms.Button();
+            this.btnMonitor = new System.Windows.Forms.Button();
             this.treeHost = new System.Windows.Forms.TreeView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.menuAddHost = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuServer = new System.Windows.Forms.ToolStripMenuItem();
+            this.aToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dBSIZEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tIMEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.listKeys = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
+            this.lASTSAVEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cONFIGGETToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,17 +59,18 @@
             this.txtVal.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.txtVal.Size = new System.Drawing.Size(926, 293);
             this.txtVal.TabIndex = 8;
+            this.txtVal.WordWrap = false;
             this.txtVal.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtVal_KeyDown);
             // 
-            // btnInfo
+            // btnMonitor
             // 
-            this.btnInfo.Location = new System.Drawing.Point(894, 36);
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Size = new System.Drawing.Size(45, 23);
-            this.btnInfo.TabIndex = 10;
-            this.btnInfo.Text = "Info";
-            this.btnInfo.UseVisualStyleBackColor = true;
-            this.btnInfo.Click += new System.EventHandler(this.btnInfo_Click);
+            this.btnMonitor.Location = new System.Drawing.Point(858, 37);
+            this.btnMonitor.Name = "btnMonitor";
+            this.btnMonitor.Size = new System.Drawing.Size(61, 23);
+            this.btnMonitor.TabIndex = 10;
+            this.btnMonitor.Text = "Monitor";
+            this.btnMonitor.UseVisualStyleBackColor = true;
+            this.btnMonitor.Click += new System.EventHandler(this.btnMonitor_Click);
             // 
             // treeHost
             // 
@@ -75,7 +83,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuAddHost});
+            this.menuAddHost,
+            this.menuServer});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(965, 25);
@@ -89,13 +98,54 @@
             this.menuAddHost.Text = "添加链接";
             this.menuAddHost.Click += new System.EventHandler(this.menuAddHost_Click);
             // 
+            // menuServer
+            // 
+            this.menuServer.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aToolStripMenuItem,
+            this.bToolStripMenuItem,
+            this.dBSIZEToolStripMenuItem,
+            this.tIMEToolStripMenuItem,
+            this.lASTSAVEToolStripMenuItem,
+            this.cONFIGGETToolStripMenuItem});
+            this.menuServer.Name = "menuServer";
+            this.menuServer.Size = new System.Drawing.Size(80, 21);
+            this.menuServer.Text = "服务器指令";
+            // 
+            // aToolStripMenuItem
+            // 
+            this.aToolStripMenuItem.Name = "aToolStripMenuItem";
+            this.aToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aToolStripMenuItem.Text = "INFO";
+            this.aToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
+            // bToolStripMenuItem
+            // 
+            this.bToolStripMenuItem.Name = "bToolStripMenuItem";
+            this.bToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.bToolStripMenuItem.Text = "CLIENT LIST";
+            this.bToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
+            // dBSIZEToolStripMenuItem
+            // 
+            this.dBSIZEToolStripMenuItem.Name = "dBSIZEToolStripMenuItem";
+            this.dBSIZEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dBSIZEToolStripMenuItem.Text = "DBSIZE";
+            this.dBSIZEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
+            // tIMEToolStripMenuItem
+            // 
+            this.tIMEToolStripMenuItem.Name = "tIMEToolStripMenuItem";
+            this.tIMEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tIMEToolStripMenuItem.Text = "TIME";
+            this.tIMEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
             // txtCommand
             // 
             this.txtCommand.BackColor = System.Drawing.SystemColors.InfoText;
             this.txtCommand.ForeColor = System.Drawing.Color.Lime;
             this.txtCommand.Location = new System.Drawing.Point(101, 39);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(696, 21);
+            this.txtCommand.Size = new System.Drawing.Size(637, 21);
             this.txtCommand.TabIndex = 13;
             // 
             // listKeys
@@ -118,13 +168,27 @@
             // 
             // btnExecute
             // 
-            this.btnExecute.Location = new System.Drawing.Point(803, 36);
+            this.btnExecute.Location = new System.Drawing.Point(759, 37);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(75, 23);
             this.btnExecute.TabIndex = 17;
             this.btnExecute.Text = "Execute";
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
+            // 
+            // lASTSAVEToolStripMenuItem
+            // 
+            this.lASTSAVEToolStripMenuItem.Name = "lASTSAVEToolStripMenuItem";
+            this.lASTSAVEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.lASTSAVEToolStripMenuItem.Text = "LASTSAVE";
+            this.lASTSAVEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
+            // cONFIGGETToolStripMenuItem
+            // 
+            this.cONFIGGETToolStripMenuItem.Name = "cONFIGGETToolStripMenuItem";
+            this.cONFIGGETToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.cONFIGGETToolStripMenuItem.Text = "CONFIG";
+            this.cONFIGGETToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
             // 
             // RedisTookit
             // 
@@ -136,7 +200,7 @@
             this.Controls.Add(this.listKeys);
             this.Controls.Add(this.txtCommand);
             this.Controls.Add(this.treeHost);
-            this.Controls.Add(this.btnInfo);
+            this.Controls.Add(this.btnMonitor);
             this.Controls.Add(this.txtVal);
             this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
@@ -155,7 +219,7 @@
         #endregion
 
         private System.Windows.Forms.TextBox txtVal;
-        private System.Windows.Forms.Button btnInfo;
+        private System.Windows.Forms.Button btnMonitor;
         private System.Windows.Forms.TreeView treeHost;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuAddHost;
@@ -163,6 +227,13 @@
         private System.Windows.Forms.ListView listKeys;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnExecute;
+        private System.Windows.Forms.ToolStripMenuItem menuServer;
+        private System.Windows.Forms.ToolStripMenuItem aToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dBSIZEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tIMEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lASTSAVEToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cONFIGGETToolStripMenuItem;
     }
 }
 

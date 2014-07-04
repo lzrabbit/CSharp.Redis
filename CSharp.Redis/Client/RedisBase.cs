@@ -15,8 +15,6 @@ namespace CSharp.Redis.Client
 
         public Pipeline Pipeline { get; set; }
 
-        BufferedStream BStream;
-
         Socket SocketClient;
 
         protected RedisBase(string host, int port, string password, RedisPool pool)
@@ -82,15 +80,23 @@ namespace CSharp.Redis.Client
                 QueuePipelineCommand<T>(args, false);
                 return null;
             }
-
-            byte[] buffer = BuildCommand(args);
-
-            this.BStream = new BufferedStream(new NetworkStream(SocketClient), 16 * 1024);
-            SocketClient.Send(buffer);
-            return ParseResult<T>();
+            return ParseResult<T>(ExecuteCommand(args));
         }
 
-        private List<T> ParseResult<T>()
+        public BufferedStream ExecuteCommand(params object[] args)
+        {
+            if (!this.SocketClient.Connected)
+            {
+                throw new RedisException("Socket连接已被关闭");
+            }
+
+            byte[] buffer = BuildCommand(args);
+            BufferedStream BStream = new BufferedStream(new NetworkStream(SocketClient), 16 * 1024);
+            SocketClient.Send(buffer);
+            return BStream;
+        }
+
+        internal List<T> ParseResult<T>(BufferedStream BStream)
         {
             //用单行回复，回复的第一个字节将是“+”
             //错误消息，回复的第一个字节将是“-”
@@ -99,38 +105,44 @@ namespace CSharp.Redis.Client
             //多个批量回复，回复的第一个字节将是“*”
             List<T> result = new List<T>();
             int lines = 1;
-            while (lines > 0)
+            while (lines-- > 0)
             {
-                string line = ReadLine();
-                switch (line[0])
+                string line = ReadLine(BStream);
+                if (line.Length > 0)
                 {
-                    case '+':
-                    case ':':
-                        result.Add(JsonDeserialize<T>(line.Substring(1)));
-                        break;
-                    case '-':
-                        throw new RedisException(line.Substring(1));
-                    case '$':
-                        int len = Convert.ToInt32(line.Substring(1));
-                        result.Add(JsonDeserialize<T>(ReadLine(len)));
-                        break;
-                    case '*':
-                        lines = int.Parse(line.Substring(1)) + 1;
-                        break;
-                    default:
-                        throw new RedisException("UnKnowResponse " + line);
+                    switch (line[0])
+                    {
+                        case '+':
+                        case ':':
+                            result.Add(JsonDeserialize<T>(line.Substring(1)));
+                            break;
+                        case '-':
+                            throw new RedisException(line.Substring(1));
+                        case '$':
+                            int len = Convert.ToInt32(line.Substring(1));
+                            result.Add(JsonDeserialize<T>(ReadLine(BStream, len)));
+                            break;
+                        case '*':
+                            lines = int.Parse(line.Substring(1));
+                            break;
+                        default:
+                            throw new RedisException("UnKnowResponse " + line);
+                    }
                 }
-                lines--;
             }
             return result;
         }
 
-        private string ReadLine()
+        private string ReadLine(BufferedStream BStream)
         {
             StringBuilder sb = new StringBuilder();
             // List<byte> bytes = new List<byte>();
+            if (!SocketClient.Connected)
+            {
+                Console.WriteLine("xxx");
+            }
             int c;
-            while ((c = this.BStream.ReadByte()) != -1)
+            while ((c = BStream.ReadByte()) != -1)
             {
                 if (c == '\r')
                     continue;
@@ -139,10 +151,11 @@ namespace CSharp.Redis.Client
                 //bytes.Add((byte)c);
                 sb.Append((char)c);
             }
+            Console.WriteLine(sb.ToString());
             return sb.ToString();
         }
 
-        private string ReadLine(int count)
+        private string ReadLine(BufferedStream BStream, int count)
         {
             if (count == -1) return null;
             byte[] retbuf = new byte[count];
@@ -163,10 +176,17 @@ namespace CSharp.Redis.Client
         {
             if (Pool == null || !Pool.ReturnClient((RedisClient)this))
             {
-                ExecuteCommand<string>(RedisCommand.Connection.QUIT);
-                SocketClient.Dispose();
+                if (SocketClient.Connected)
+                {
+                    ExecuteCommand<string>(RedisCommand.Connection.QUIT);
+                    SocketClient.Dispose();
+                }
             }
-           
+        }
+
+        protected bool IsSocketClosed()
+        {
+            return SocketClient == null || !SocketClient.Connected;
         }
 
         private void QueuePipelineCommand<T>(object[] args, bool isSingle)
