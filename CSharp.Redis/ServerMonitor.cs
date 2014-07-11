@@ -13,12 +13,12 @@ namespace CSharp.Redis
     public partial class ServerMonitor : Form
     {
         public RedisMonitor Monitor;
-
         public ServerMonitor(string host, int port, string password)
         {
             try
             {
                 InitializeComponent();
+                this.btnStop.Enabled = false;
                 this.Monitor = new RedisMonitor(host, port, password);
             }
             catch (Exception ex)
@@ -53,6 +53,8 @@ namespace CSharp.Redis
         private void btnStart_Click(object sender, EventArgs e)
         {
             this.Monitor.Start(this.txtExeuctedCommands);
+            this.btnStart.Enabled = false;
+            this.btnStop.Enabled = true;
         }
 
         private void btnStop_Click(object sender, EventArgs e)
@@ -65,6 +67,8 @@ namespace CSharp.Redis
             {
                 MessageBox.Show(ex.Message);
             }
+            this.btnStart.Enabled = true;
+            this.btnStop.Enabled = false;
         }
 
 

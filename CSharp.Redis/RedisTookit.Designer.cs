@@ -39,12 +39,14 @@
             this.bToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dBSIZEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tIMEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lASTSAVEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cONFIGGETToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.txtCommand = new System.Windows.Forms.TextBox();
             this.listKeys = new System.Windows.Forms.ListView();
             this.label1 = new System.Windows.Forms.Label();
             this.btnExecute = new System.Windows.Forms.Button();
-            this.lASTSAVEToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cONFIGGETToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtKeys = new System.Windows.Forms.TextBox();
+            this.btnKeys = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,7 +66,7 @@
             // 
             // btnMonitor
             // 
-            this.btnMonitor.Location = new System.Drawing.Point(858, 37);
+            this.btnMonitor.Location = new System.Drawing.Point(880, 43);
             this.btnMonitor.Name = "btnMonitor";
             this.btnMonitor.Size = new System.Drawing.Size(61, 23);
             this.btnMonitor.TabIndex = 10;
@@ -114,38 +116,52 @@
             // aToolStripMenuItem
             // 
             this.aToolStripMenuItem.Name = "aToolStripMenuItem";
-            this.aToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.aToolStripMenuItem.Text = "INFO";
             this.aToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
             // 
             // bToolStripMenuItem
             // 
             this.bToolStripMenuItem.Name = "bToolStripMenuItem";
-            this.bToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.bToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.bToolStripMenuItem.Text = "CLIENT LIST";
             this.bToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
             // 
             // dBSIZEToolStripMenuItem
             // 
             this.dBSIZEToolStripMenuItem.Name = "dBSIZEToolStripMenuItem";
-            this.dBSIZEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.dBSIZEToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.dBSIZEToolStripMenuItem.Text = "DBSIZE";
             this.dBSIZEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
             // 
             // tIMEToolStripMenuItem
             // 
             this.tIMEToolStripMenuItem.Name = "tIMEToolStripMenuItem";
-            this.tIMEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.tIMEToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.tIMEToolStripMenuItem.Text = "TIME";
             this.tIMEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
+            // lASTSAVEToolStripMenuItem
+            // 
+            this.lASTSAVEToolStripMenuItem.Name = "lASTSAVEToolStripMenuItem";
+            this.lASTSAVEToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.lASTSAVEToolStripMenuItem.Text = "LASTSAVE";
+            this.lASTSAVEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            // 
+            // cONFIGGETToolStripMenuItem
+            // 
+            this.cONFIGGETToolStripMenuItem.Name = "cONFIGGETToolStripMenuItem";
+            this.cONFIGGETToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.cONFIGGETToolStripMenuItem.Text = "CONFIG";
+            this.cONFIGGETToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
             // 
             // txtCommand
             // 
             this.txtCommand.BackColor = System.Drawing.SystemColors.InfoText;
             this.txtCommand.ForeColor = System.Drawing.Color.Lime;
-            this.txtCommand.Location = new System.Drawing.Point(101, 39);
+            this.txtCommand.Location = new System.Drawing.Point(343, 46);
             this.txtCommand.Name = "txtCommand";
-            this.txtCommand.Size = new System.Drawing.Size(637, 21);
+            this.txtCommand.Size = new System.Drawing.Size(450, 21);
             this.txtCommand.TabIndex = 13;
             // 
             // listKeys
@@ -160,7 +176,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 41);
+            this.label1.Location = new System.Drawing.Point(254, 49);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(83, 12);
             this.label1.TabIndex = 16;
@@ -168,7 +184,7 @@
             // 
             // btnExecute
             // 
-            this.btnExecute.Location = new System.Drawing.Point(759, 37);
+            this.btnExecute.Location = new System.Drawing.Point(799, 43);
             this.btnExecute.Name = "btnExecute";
             this.btnExecute.Size = new System.Drawing.Size(75, 23);
             this.btnExecute.TabIndex = 17;
@@ -176,25 +192,32 @@
             this.btnExecute.UseVisualStyleBackColor = true;
             this.btnExecute.Click += new System.EventHandler(this.btnExecute_Click);
             // 
-            // lASTSAVEToolStripMenuItem
+            // txtKeys
             // 
-            this.lASTSAVEToolStripMenuItem.Name = "lASTSAVEToolStripMenuItem";
-            this.lASTSAVEToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.lASTSAVEToolStripMenuItem.Text = "LASTSAVE";
-            this.lASTSAVEToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            this.txtKeys.BackColor = System.Drawing.SystemColors.InfoText;
+            this.txtKeys.ForeColor = System.Drawing.Color.Lime;
+            this.txtKeys.Location = new System.Drawing.Point(14, 43);
+            this.txtKeys.Name = "txtKeys";
+            this.txtKeys.Size = new System.Drawing.Size(134, 21);
+            this.txtKeys.TabIndex = 18;
             // 
-            // cONFIGGETToolStripMenuItem
+            // btnKeys
             // 
-            this.cONFIGGETToolStripMenuItem.Name = "cONFIGGETToolStripMenuItem";
-            this.cONFIGGETToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.cONFIGGETToolStripMenuItem.Text = "CONFIG";
-            this.cONFIGGETToolStripMenuItem.Click += new System.EventHandler(this.ServerToolStripMenuItem_Click);
+            this.btnKeys.Location = new System.Drawing.Point(154, 42);
+            this.btnKeys.Name = "btnKeys";
+            this.btnKeys.Size = new System.Drawing.Size(75, 23);
+            this.btnKeys.TabIndex = 20;
+            this.btnKeys.Text = "Keys";
+            this.btnKeys.UseVisualStyleBackColor = true;
+            this.btnKeys.Click += new System.EventHandler(this.btnKeys_Click);
             // 
             // RedisTookit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(965, 613);
+            this.Controls.Add(this.btnKeys);
+            this.Controls.Add(this.txtKeys);
             this.Controls.Add(this.btnExecute);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listKeys);
@@ -234,6 +257,8 @@
         private System.Windows.Forms.ToolStripMenuItem tIMEToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lASTSAVEToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cONFIGGETToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtKeys;
+        private System.Windows.Forms.Button btnKeys;
     }
 }
 

@@ -14,6 +14,8 @@ namespace CSharp.Redis.Client
         public RedisClient Client;
         Thread _Thread;
 
+        public bool IsRunning { get; set; }
+
         public string Host { get; set; }
         public int Port { get; set; }
         public string Password { get; set; }
@@ -38,8 +40,8 @@ namespace CSharp.Redis.Client
 
         public void Start(TextWriter writer)
         {
-            Stop();
             this.Client = new RedisClient(Host, Port, Password);
+            IsRunning = true;
             _Thread = new Thread(() =>
             {
                 using (BufferedStream BStream = Client.ExecuteCommand(RedisCommand.Server.MONITOR))
@@ -73,6 +75,9 @@ namespace CSharp.Redis.Client
 
         public void Stop()
         {
+            IsRunning = false;
+            //停止后暂停200毫秒，以便让正在运行的任务成功退出
+            Thread.Sleep(200);
             if (this.Client != null)
             {
                 this.Client.Dispose();

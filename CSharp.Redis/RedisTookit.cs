@@ -29,12 +29,13 @@ namespace CSharp.Redis
                 this.menuServer.Enabled = false;
                 this.btnExecute.Enabled = false;
                 this.btnMonitor.Enabled = false;
+                this.btnKeys.Enabled = false;
                 this.Text = string.Format("{0}(v{1})", Title, Application.ProductVersion);
 
                 this.listKeys.Columns.Add("Key");
                 this.listKeys.Columns.Add("Type");
+                this.listKeys.Columns.Add("Encoding");
                 this.listKeys.Columns.Add("Size");
-                this.listKeys.Columns.Add("");
                 this.listKeys.GridLines = true;
                 this.listKeys.View = View.Details;
                 this.listKeys.MultiSelect = false;
@@ -67,6 +68,7 @@ namespace CSharp.Redis
                 this.btnExecute.Enabled = true;
                 this.btnMonitor.Enabled = true;
                 this.menuServer.Enabled = true;
+                this.btnKeys.Enabled = true;
                 this.Text = string.Format("{0}(v{1}) {2}:{3}", Title, Application.ProductVersion, conn.Host, conn.Port);
 
                 QueryKeys("*");
@@ -114,11 +116,9 @@ namespace CSharp.Redis
             {
                 this.listKeys.Items.Clear();
                 var entries = Redis.QueryKeys(pattern);
-                int i = 0;
-                foreach (var entry in entries)
+                foreach (var entry in entries.OrderBy(item => item.Key))
                 {
-                    i++;
-                    this.listKeys.Items.Add(new ListViewItem(new string[] { entry.Key, entry.Type, entry.ItemCount.ToString(), i.ToString(), }) { Tag = entry });
+                    this.listKeys.Items.Add(new ListViewItem(new string[] { entry.Key, entry.Type, entry.Encoding, entry.ItemCount.ToString(), }) { Tag = entry });
                 }
                 this.txtCommand.Text = RedisCommand.Keys.KEYS + " " + pattern;
             }
@@ -153,6 +153,14 @@ namespace CSharp.Redis
             monitor.Show();
         }
 
+        private void btnKeys_Click(object sender, EventArgs e)
+        {
+            string pattern = this.txtKeys.Text.Trim();
+            if (string.IsNullOrEmpty(pattern)) pattern = "*";
+            this.txtKeys.Text = pattern;
+            QueryKeys(pattern);
+        }
+
         public void ExecuteCommand(string command)
         {
             try
@@ -171,5 +179,8 @@ namespace CSharp.Redis
                 }
             }
         }
+
+
+
     }
 }

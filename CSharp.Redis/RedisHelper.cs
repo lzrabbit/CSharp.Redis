@@ -58,6 +58,7 @@ namespace CSharp.Redis
                 foreach (var key in keys)
                 {
                     string type = redis.Type(key);
+                    string encoding = redis.Object(key, EObjectCommand.ENCODING);
                     int len = -1;
                     switch (type)
                     {
@@ -79,6 +80,7 @@ namespace CSharp.Redis
                         ItemCount = len,
                         Key = key,
                         Type = type,
+                        Encoding = encoding,
                     });
                 }
             }
@@ -150,6 +152,8 @@ namespace CSharp.Redis
             /// hash (哈希表) 
             /// </summary>
             public string Type { get; set; }
+
+            public string Encoding { get; set; }
 
             public int ItemCount { get; set; }
 

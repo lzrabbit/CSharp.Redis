@@ -30,6 +30,12 @@ v0.3 2014.07.04
 改善程序稳定性
 增加执行命令监控功能
 添加常用服务器指令DBSIZE,CLIENT LIST,INFO,TIME,CONFIG
+
+v0.4 2014.07.09
+添加独立的KEY查询按钮
+改善服务器指令监控功能兼容性
+KEY查询添加Encoding
+KEY按照名称排序
 ", Application.ProductVersion);
 
 
